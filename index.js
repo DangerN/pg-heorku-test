@@ -7,7 +7,9 @@ const pool = new Pool({
   connectionString: connectionString,
 })
 
-pool.query('drop table if exists test; create table test (id serial, name text); insert into test (name) values (yeet),(yeet);')
+pool.query('drop table if exists test; create table test (id serial, name text); insert into test (name) values (\'yeet\'),(\'yeet\');', (err, res) => {
+  console.log(err, res);
+})
 
 // const query = (response) => {
 //   pool.query('select *  from test', (err, res) => {
