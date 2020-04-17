@@ -7,7 +7,7 @@ const pool = new Pool({
   connectionString: connectionString,
 })
 
-pool.query('drop table if exists test; create table test (id serial, name text); insert into test (text) values (yeet),(yeet);')
+pool.query('drop table if exists test; create table test (id serial, name text); insert into test (name) values (yeet),(yeet);')
 
 // const query = (response) => {
 //   pool.query('select *  from test', (err, res) => {
@@ -34,7 +34,7 @@ const db = {
 app.get('/', (req, res) => {
   db.query().then(q=>{
     res.send(q)
-  })
+  }).catch(err=>res.status(500).send(err))
 })
 
 app.listen(process.env.PORT, () => {
