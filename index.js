@@ -7,17 +7,34 @@ const pool = new Pool({
   connectionString: connectionString,
 })
 
-const query = (response) => {
-  pool.query('SELECT NOW()', (err, res) => {
-    console.log(err, res)
-    pool.end()
-    response.send(res)
-  })
+pool.query('drop table if exists test; create table test (id serial, name text); insert into test (text) values (yeet),(yeet);')
+
+// const query = (response) => {
+//   pool.query('select *  from test', (err, res) => {
+//     console.log(err, res)
+//     response.send(res)
+//   })
+// }
+
+const db = {
+  query: () => {
+    return new Promise(function(resolve, reject) {
+      pool.query('select * from test', (err, res) => {
+        console.log(err, res)
+        if(err){reject(err)}
+        resolve(res)
+      })
+    });
+  }
 }
 
 
+
+
 app.get('/', (req, res) => {
-  query(res)
+  db.query().then(q=>{
+    res.send(q)
+  })
 })
 
 app.listen(process.env.PORT, () => {
